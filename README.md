@@ -144,3 +144,8 @@ Redis provides a different range of persistence options:
 - It is possible to combine both AOF and RDB in the same instance. Notice that, in this case, when Redis restarts the AOF file will be used to reconstruct the original dataset since it is guaranteed to be the most complete.
 
 More Info: https://redis.io/topics/persistence
+
+## Redis Node Cache
+
+- `$ npm i express node-fetch redis`
+- `$ npm i -D nodemon`
