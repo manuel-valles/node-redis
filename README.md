@@ -149,3 +149,11 @@ More Info: https://redis.io/topics/persistence
 
 - `$ npm i express node-fetch redis`
 - `$ npm i -D nodemon`
+- Set data to Redis with expiration as the data can change: `client.setex(username, 3600, repos);` // (_key, seconds, data_)
+- Example: `http://localhost:5000/repos/manukempo` -> manukempo has _79_ Github repos
+
+  - `$ docker exec -it redis1 sh`
+  - `# redis-cli`
+  - `127.0.0.1:6379> get manukempo` -> "79"
+
+    ![loadingTimeNoCache](/redis-node-cache/images/loadingTimeNoCache.jpg)
