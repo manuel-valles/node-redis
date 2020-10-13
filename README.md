@@ -157,8 +157,18 @@ More Info: https://redis.io/topics/persistence
 
 1. Create the dependencies:
 
-   - `$ npm i express node-fetch redis`
+   - `$ npm i express node-fetch redis method-override`
    - `$ npm i -D nodemon`
+   - **method-override** allows us to use HTTP verbs such as PUT or DELETE in forms:
+     ```js
+     app.use(methodOverride('_method'));
+     ```
+     ```html
+     <form
+       method="POST"
+       action="/user/delete/{{user.id}}?_method=DELETE"
+     ></form>
+     ```
 
 2. Set data to Redis with expiration as the data can change: `client.setex(username, 3600, repos);` // (_key, seconds, data_)
 
@@ -196,4 +206,4 @@ More Info: https://redis.io/topics/persistence
    - `HMSET user001 first_name "Manu" last_name "Kem" email "manukem@gmail.com" phone "44-123456789"`
    - `HMSET user002 first_name "Mar" last_name "Sans" email "marsans@gmail.com" phone "44-123456790"`
 
-**NOTE:** We need `express.json()` and `express.urlencoded()` for POST and PUT requests, because in both these requests we are sending data (in the form of some data object) to the server and we are asking the server to accept or store that data (object), which is enclosed in the body (i.e. req.body) of that (POST or PUT) Request. If _extended_ is **false**, you can not post "nested objects".
+**IMPORTANT:** We need `express.json()` and `express.urlencoded()` for _POST_ and _PUT_ requests, because we are sending data (in the form of some data object) to the server and we are asking the server to accept or store that data, which is enclosed in the body (i.e. req.body). If _extended_ is **false**, you can NOT post "nested objects".

@@ -1,6 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
+const methodOverride = require('method-override');
 const redis = require('redis');
 
 // Create Redis Client
@@ -16,8 +17,14 @@ const app = express();
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
+// Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Method Override (DELETE in a form - client side)
+app.use(methodOverride('_method'));
+
+// Static Data
 const publicPath = path.join(__dirname, './views');
 app.use('/', express.static(publicPath));
 
@@ -73,6 +80,12 @@ app.post('/user/add', (req, res, next) => {
       res.redirect('/');
     }
   );
+});
+
+// Delete User
+app.delete('/user/delete/:id', (req, res, next) => {
+  client.del(req.params.id);
+  res.redirect('/');
 });
 
 app.listen(port, () => console.log(`Server started on ${port}`));
