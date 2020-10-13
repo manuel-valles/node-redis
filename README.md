@@ -187,5 +187,13 @@ More Info: https://redis.io/topics/persistence
    - `$ npm i -D nodemon`
 
 2. UI:
+
    - Free themes for Bootstrap: https://bootswatch.com/
    - https://getbootstrap.com/docs/4.0/examples/starter-template/
+
+3. Create the first users locally:
+
+   - `HMSET user001 first_name "Manu" last_name "Kem" email "manukem@gmail.com" phone "44-123456789"`
+   - `HMSET user002 first_name "Mar" last_name "Sans" email "marsans@gmail.com" phone "44-123456790"`
+
+**NOTE:** We need `express.json()` and `express.urlencoded()` for POST and PUT requests, because in both these requests we are sending data (in the form of some data object) to the server and we are asking the server to accept or store that data (object), which is enclosed in the body (i.e. req.body) of that (POST or PUT) Request. If _extended_ is **false**, you can not post "nested objects".
