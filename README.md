@@ -1,3 +1,7 @@
+# Node App with Redis
+
+A Simple Management App with Redis. It includes an introduction to Redis and Redis caching.
+
 ## What is Redis?
 
 - Open source in-memory data structure store which can be used as a database and/or cache and message broker;
@@ -174,3 +178,10 @@ More Info: https://redis.io/topics/persistence
    ```
 
    ![loadingTimeCacheMiddleware](/redis-node-cache/images/loadingTimeCacheMiddleware.jpg)
+
+## Node App with Redis
+
+1. Create the dependencies:
+   - `$ npm i express redis express-handlebars`
+   - `$ npm i -D nodemon`
+   - Free themes for Bootstrap: https://bootswatch.com/
