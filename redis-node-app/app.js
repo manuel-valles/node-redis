@@ -26,7 +26,7 @@ app.get('/', (req, res, next) => {
   res.render('searchusers');
 });
 
-// Search processing
+// Search Processing
 app.post('/user/search', (req, res, next) => {
   const { id } = req.body;
 
@@ -42,6 +42,37 @@ app.post('/user/search', (req, res, next) => {
       });
     }
   });
+});
+
+// Add User Page
+app.get('/user/add', (req, res, next) => {
+  res.render('adduser');
+});
+
+// Add User Processing
+app.post('/user/add', (req, res, next) => {
+  const { id, first_name, last_name, email, phone } = req.body;
+
+  client.hmset(
+    id,
+    [
+      'first_name',
+      first_name,
+      'last_name',
+      last_name,
+      'email',
+      email,
+      'phone',
+      phone,
+    ],
+    (err, reply) => {
+      if (err) {
+        console.error(err);
+      }
+      console.log(reply);
+      res.redirect('/');
+    }
+  );
 });
 
 app.listen(port, () => console.log(`Server started on ${port}`));
