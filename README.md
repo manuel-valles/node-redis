@@ -182,6 +182,10 @@ More Info: https://redis.io/topics/persistence
 ## Node App with Redis
 
 1. Create the dependencies:
+
    - `$ npm i express redis express-handlebars`
    - `$ npm i -D nodemon`
+
+2. UI:
    - Free themes for Bootstrap: https://bootswatch.com/
+   - https://getbootstrap.com/docs/4.0/examples/starter-template/
