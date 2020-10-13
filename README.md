@@ -51,7 +51,7 @@
 
 ## Redis Commands
 
-1. Basic (Strings)
+### 1. Basic (Strings)
 
 - `ECHO 'Hello World!'` -> `"Hello World"`
 - `SET foo 100` -> `OK`
@@ -80,9 +80,10 @@
 - Append: `APPEND key1 " World"`
 - Rename a key: `RENAME key1 greeting`
 
-2. List
+### 2. List
 
-- **Redis Lists** are simply lists of strings, sorted by insertion order. It is possible to add elements to a Redis List pushing new elements on the head (on the **left**) or on the tail (on the **right**) of the list.
+**Redis Lists** are simply lists of strings, sorted by insertion order. It is possible to add elements to a Redis List pushing new elements on the head (on the **left**) or on the tail (on the **right**) of the list.
+
 - Create and add a value to the list:
   - At the beginning:
     `LPUSH people "David"` -> (integer) 1
@@ -95,9 +96,10 @@
 - Remove the last/right element of the list: `RPOP people` -> "Devon"
 - Insert an element between two elements of a list: `LINSERT people BEFORE "David" "Mary"`
 
-3. Sets
+### 3. Sets
 
-- **Redis Sets** are an unordered collection of Strings. It is possible to add, remove, and test for existence of members in O(1) (constant time regardless of the number of elements contained inside the Set). They have the desirable property of not allowing repeated members.
+**Redis Sets** are an unordered collection of Strings. It is possible to add, remove, and test for existence of members in O(1) (constant time regardless of the number of elements contained inside the Set). They have the desirable property of not allowing repeated members.
+
 - `SADD cars "Ford"` -> (integer) 1
 - `SADD cars "Honda"` -> (integer) 1
 - `SADD cars "BMW"` -> (integer) 1
@@ -110,9 +112,10 @@
 - Remove a member from a set: `SREM cars "BMW"` -> 1
   - `SMEMBERS cars` -> 1) "Honda"
 
-4. Sorted Sets
+### 4. Sorted Sets
 
-- **Redis Sorted Sets** are, similarly to Redis Sets, non repeating collections of Strings. The difference is that every member of a Sorted Set is associated with score, that is used in order to take the sorted set ordered, from the smallest to the greatest score. While members are unique, scores may be repeated.
+**Redis Sorted Sets** are, similarly to Redis Sets, non repeating collections of Strings. The difference is that every member of a Sorted Set is associated with score, that is used in order to take the sorted set ordered, from the smallest to the greatest score. While members are unique, scores may be repeated.
+
 - `ZADD users 1985 "Manu Kem"` -> 1
 - `ZADD users 1987 "David Smith"` -> 1
 - `ZADD users 1986 "Devon Fritz"` -> 1
@@ -120,9 +123,10 @@
 - Get the full set: `ZRANGE users 0 -1` -> 1) "Devon Fritz" 2) "Manu Kem" 3) "David Smith"
 - Increment one or more the score of a member: `ZINCRBY users 1 "Manu Kem"` -> 1986
 
-5. Hashes
+### 5. Hashes
 
-- **Redis Hashes** are maps between string fields and string values, so they are the perfect data type to represent objects (e.g. A User with a number of fields like name, surname, age, and so forth
+**Redis Hashes** are maps between string fields and string values, so they are the perfect data type to represent objects (e.g. A User with a number of fields like name, surname, age, and so forth
+
 - `HSET user:manu name "Manu Kem"` -> 1
 - `HSET user:manu email "manukem@gmail.com"` -> 1
 - `HGET user:manu email` -> "manukem@gmail.com"
@@ -147,13 +151,26 @@ More Info: https://redis.io/topics/persistence
 
 ## Redis Node Cache
 
-- `$ npm i express node-fetch redis`
-- `$ npm i -D nodemon`
-- Set data to Redis with expiration as the data can change: `client.setex(username, 3600, repos);` // (_key, seconds, data_)
-- Example: `http://localhost:5000/repos/manukempo` -> manukempo has _79_ Github repos
+1. Create the dependencies:
 
-  - `$ docker exec -it redis1 sh`
-  - `# redis-cli`
-  - `127.0.0.1:6379> get manukempo` -> "79"
+   - `$ npm i express node-fetch redis`
+   - `$ npm i -D nodemon`
 
-    ![loadingTimeNoCache](/redis-node-cache/images/loadingTimeNoCache.jpg)
+2. Set data to Redis with expiration as the data can change: `client.setex(username, 3600, repos);` // (_key, seconds, data_)
+
+   - Example request: `http://localhost:5000/repos/manukempo` -> manukempo has _79_ Github repos
+   - Storing result:
+
+     - `$ docker exec -it redis1 sh`
+     - `# redis-cli`
+     - `127.0.0.1:6379> get manukempo` -> "79"
+
+     ![loadingTimeNoCache](/redis-node-cache/images/loadingTimeNoCache.jpg)
+
+3. Create a piece of _middleware_ to cache the values:
+
+   ```js
+   app.get('/repos/:username', cache, getRepos);
+   ```
+
+   ![loadingTimeCacheMiddleware](/redis-node-cache/images/loadingTimeCacheMiddleware.jpg)
